@@ -5,7 +5,9 @@ type Stack struct {
 }
 
 func NewStack() *Stack {
-	return &Stack{}
+	return &Stack{
+		data: make([]string, 0),
+	}
 }
 
 func (s *Stack) IsEmpty() bool {

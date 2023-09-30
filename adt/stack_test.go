@@ -10,30 +10,35 @@ import (
 
 type StackSuite struct {
 	suite.Suite
+	stack *adt.Stack
 }
 
 func TestStackSuite(t *testing.T) {
 	suite.Run(t, new(StackSuite))
 }
 
+// Setup the Suite
+// Put all of the setup lines here.
+func (s *StackSuite) SetupTest() {
+	s.stack = adt.NewStack()
+}
+
 func (s *StackSuite) TestEmpty() {
-	stack := adt.NewStack()
-	s.True(stack.IsEmpty())
+	s.True(s.stack.IsEmpty())
 }
 
 func (s *StackSuite) TestNotEmpty() {
-	stack := adt.NewStack()
-	stack.Push("red")
-	s.False(stack.IsEmpty())
+	s.stack.Push("red")
+	s.False(s.stack.IsEmpty())
 }
 
 func (s *StackSuite) TestStackEmptySizeZero() {
-	stack := adt.NewStack()
-	s.Zero(stack.Size())
+	s.Zero(s.stack.Size())
 }
 
 func (s *StackSuite) TestStackNotEmptySize() {
-	stack := adt.NewStack()
-	stack.Push("red")
-	s.NotZero(stack.Size())
+	s.stack.Push("red")
+	s.stack.Push("blue")
+	s.NotZero(s.stack.Size())
+	s.Equal(2, s.stack.Size())
 }
