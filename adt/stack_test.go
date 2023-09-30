@@ -1,6 +1,7 @@
 package adt_test
 
 import (
+	"log"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -14,6 +15,7 @@ type StackSuite struct {
 }
 
 func TestStackSuite(t *testing.T) {
+	log.Println("Learning testify suite")
 	suite.Run(t, new(StackSuite))
 }
 
