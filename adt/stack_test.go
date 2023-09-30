@@ -47,4 +47,5 @@ func (s *StackSuite) TestStackPop() {
 	s.stack.Push("red")
 	s.Equal("red", s.stack.Pop())
 	s.Zero(s.stack.Size())
+	s.True(s.stack.IsEmpty())
 }
