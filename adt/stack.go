@@ -21,3 +21,10 @@ func (s *Stack) Push(input string) {
 func (s *Stack) Size() int {
 	return len(s.data)
 }
+
+func (s *Stack) Pop() string {
+	popItem := s.data[len(s.data)-1]
+	// remove the popItem from the slice
+	s.data = s.data[:len(s.data)-1]
+	return popItem
+}
