@@ -49,3 +49,13 @@ func (s *StackSuite) TestStackPop() {
 	s.Zero(s.stack.Size())
 	s.True(s.stack.IsEmpty())
 }
+
+func (s *StackSuite) TestStackPopMultipleItems() {
+	// FiLo, first in, last out
+	s.stack.Push("red")
+	s.stack.Push("blue")
+	s.Equal("blue", s.stack.Pop())
+	s.Equal("red", s.stack.Pop())
+	s.Zero(s.stack.Size())
+	s.True(s.stack.IsEmpty())
+}

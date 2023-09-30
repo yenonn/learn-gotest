@@ -10,16 +10,16 @@ func NewStack() *Stack {
 	}
 }
 
+func (s *Stack) Size() int {
+	return len(s.data)
+}
+
 func (s *Stack) IsEmpty() bool {
 	return len(s.data) <= 0
 }
 
 func (s *Stack) Push(input string) {
 	s.data = append(s.data, input)
-}
-
-func (s *Stack) Size() int {
-	return len(s.data)
 }
 
 func (s *Stack) Pop() string {
