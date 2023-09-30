@@ -15,3 +15,7 @@ func (s *Stack) IsEmpty() bool {
 func (s *Stack) Push(input string) {
 	s.data = append(s.data, input)
 }
+
+func (s *Stack) Size() int {
+	return len(s.data)
+}

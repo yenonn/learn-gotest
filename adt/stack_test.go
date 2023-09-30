@@ -26,3 +26,14 @@ func (s *StackSuite) TestNotEmpty() {
 	stack.Push("red")
 	s.False(stack.IsEmpty())
 }
+
+func (s *StackSuite) TestStackEmptySizeZero() {
+	stack := adt.NewStack()
+	s.Zero(stack.Size())
+}
+
+func (s *StackSuite) TestStackNotEmptySize() {
+	stack := adt.NewStack()
+	stack.Push("red")
+	s.NotZero(stack.Size())
+}
