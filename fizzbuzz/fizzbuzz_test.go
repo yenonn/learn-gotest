@@ -20,3 +20,8 @@ func (f *FizzBuzzSuite) TestOneUnchanged() {
 	r := fizzbuzz.Run([]int{1})
 	f.Equal([]string{"1"}, r)
 }
+
+func (f *FizzBuzzSuite) TestTwoUnchanged() {
+	r := fizzbuzz.Run([]int{1, 2})
+	f.Equal([]string{"1", "2"}, r)
+}
