@@ -25,3 +25,8 @@ func (f *FizzBuzzSuite) TestTwoUnchanged() {
 	result := fizzbuzz.Run([]int{1, 2})
 	f.Equal([]string{"1", "2"}, result)
 }
+
+func (f *FizzBuzzSuite) TestThreeChanged() {
+	result := fizzbuzz.Run([]int{1, 2, 3})
+	f.Equal([]string{"1", "2", "fizz"}, result)
+}
