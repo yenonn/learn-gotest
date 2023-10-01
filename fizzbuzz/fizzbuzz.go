@@ -7,6 +7,8 @@ func Run(intInput []int) []string {
 	for _, input := range intInput {
 		if input%3 == 0 {
 			strOutput = append(strOutput, "fizz")
+		} else if input%5 == 0 {
+			strOutput = append(strOutput, "buzz")
 		} else {
 			strOutput = append(strOutput, strconv.Itoa(input))
 		}
