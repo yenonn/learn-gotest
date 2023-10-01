@@ -17,11 +17,11 @@ func TestFizzBuzz(t *testing.T) {
 }
 
 func (f *FizzBuzzSuite) TestOneUnchanged() {
-	r := fizzbuzz.Run([]int{1})
-	f.Equal([]string{"1"}, r)
+	result := fizzbuzz.Run([]int{1})
+	f.Equal([]string{"1"}, result)
 }
 
 func (f *FizzBuzzSuite) TestTwoUnchanged() {
-	r := fizzbuzz.Run([]int{1, 2})
-	f.Equal([]string{"1", "2"}, r)
+	result := fizzbuzz.Run([]int{1, 2})
+	f.Equal([]string{"1", "2"}, result)
 }
