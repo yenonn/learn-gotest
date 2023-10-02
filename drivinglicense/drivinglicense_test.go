@@ -72,6 +72,7 @@ func (s *DrivingLicenseSuite) TestDoubleLicensesApplicant() {
 func (s *DrivingLicenseSuite) TestNormalLicenseApplicant() {
 	normalLicensesApplicant := &HolderApplicant{}
 	lg := drivinglicense.NewNumberGenerator()
-	_, err := lg.Generate(normalLicensesApplicant)
+	license, err := lg.Generate(normalLicensesApplicant)
 	s.NoError(err)
+	s.NotZero(len(license))
 }
