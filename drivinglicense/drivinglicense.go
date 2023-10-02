@@ -25,7 +25,7 @@ func (n NumberGenerator) Generate(applicant Applicant) (string, error) {
 
 	if applicant.IsAdult() && applicant.HoldDoubleLicenses() {
 		// error case: Adult that holding double licenses
-		return "", errors.New("holding double licenses")
+		return "", errors.New("holding double licenses, you must not holding a license before")
 	}
 
 	if !applicant.IsAdult() && !applicant.HoldDoubleLicenses() {
