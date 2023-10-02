@@ -56,7 +56,6 @@ func (s *DrivingLicenseSuite) TestUnderAgeApplicant() {
 	underAgeApplicant := &UnderAgeApplicant{}
 	lg := drivinglicense.NewNumberGenerator()
 	_, err := lg.Generate(underAgeApplicant)
-	// no error yield
 	s.Error(err)
 	s.Contains(err.Error(), "underaged applicant")
 }
@@ -73,6 +72,8 @@ func (s *DrivingLicenseSuite) TestNormalLicenseApplicant() {
 	normalLicensesApplicant := &HolderApplicant{}
 	lg := drivinglicense.NewNumberGenerator()
 	license, err := lg.Generate(normalLicensesApplicant)
+	// yield no error
 	s.NoError(err)
+	// license is not empty
 	s.NotZero(len(license))
 }
