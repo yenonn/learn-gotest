@@ -54,26 +54,45 @@ func (h *HolderApplicant) HoldDoubleLicenses() bool {
 
 func (s *DrivingLicenseSuite) TestUnderAgeApplicant() {
 	underAgeApplicant := &UnderAgeApplicant{}
-	lg := drivinglicense.NewNumberGenerator()
+	logger := &SpyLogger{}
+	lg := drivinglicense.NewNumberGenerator(logger)
 	_, err := lg.Generate(underAgeApplicant)
 	s.Error(err)
 	s.Contains(err.Error(), "underaged applicant")
+	s.Equal(1, logger.callCount)
+	s.Contains(logger.lastMessage, "underaged applicant")
 }
 
 func (s *DrivingLicenseSuite) TestDoubleLicensesApplicant() {
 	holdingDoubleLicensesApplicant := &SecondLicenseHolderApplicant{}
-	lg := drivinglicense.NewNumberGenerator()
+	logger := &SpyLogger{}
+	lg := drivinglicense.NewNumberGenerator(logger)
 	_, err := lg.Generate(holdingDoubleLicensesApplicant)
 	s.Error(err)
 	s.Contains(err.Error(), "holding double licenses")
+	s.Equal(1, logger.callCount)
+	s.Contains(logger.lastMessage, "holding double licenses")
 }
 
 func (s *DrivingLicenseSuite) TestNormalLicenseApplicant() {
 	normalLicensesApplicant := &HolderApplicant{}
-	lg := drivinglicense.NewNumberGenerator()
+	logger := &SpyLogger{}
+	lg := drivinglicense.NewNumberGenerator(logger)
 	license, err := lg.Generate(normalLicensesApplicant)
 	// yield no error
 	s.NoError(err)
 	// license is not empty
 	s.NotZero(len(license))
+	s.Equal(1, logger.callCount)
+	s.Contains(logger.lastMessage, "normal applicant")
+}
+
+type SpyLogger struct {
+	callCount   int
+	lastMessage string
+}
+
+func (spy *SpyLogger) LogStuffs(v string) {
+	spy.callCount++
+	spy.lastMessage = v
 }
