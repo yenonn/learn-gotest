@@ -2,6 +2,7 @@ package drivinglicense
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/google/uuid"
 )
@@ -9,6 +10,7 @@ import (
 type Applicant interface {
 	IsAdult() bool
 	HoldDoubleLicenses() bool
+	GetInitials() string
 }
 
 type Logger interface {
@@ -29,7 +31,8 @@ func (n NumberGenerator) Generate(applicant Applicant) (string, error) {
 	if applicant.IsAdult() && !applicant.HoldDoubleLicenses() {
 		// normal case. IsAdult and Not holding double licenses
 		n.logger.LogStuffs("normal applicant")
-		return uuid.New().String(), nil
+		license := fmt.Sprintf("%s:%s", applicant.GetInitials(), uuid.New().String())
+		return license, nil
 	}
 
 	if applicant.IsAdult() && applicant.HoldDoubleLicenses() {

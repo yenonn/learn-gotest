@@ -28,6 +28,10 @@ func (u *UnderAgeApplicant) HoldDoubleLicenses() bool {
 	return false
 }
 
+func (u *UnderAgeApplicant) GetInitials() string {
+	return ""
+}
+
 // hardcode the return value
 // dummy test stub for SecondLicenseHolderApplicant
 type SecondLicenseHolderApplicant struct{}
@@ -40,9 +44,15 @@ func (s *SecondLicenseHolderApplicant) HoldDoubleLicenses() bool {
 	return true
 }
 
+func (s *SecondLicenseHolderApplicant) GetInitials() string {
+	return ""
+}
+
 // hardcode the return value
 // dummy test stub for Normal license holder applicant
-type HolderApplicant struct{}
+type HolderApplicant struct {
+	initials string
+}
 
 func (h *HolderApplicant) IsAdult() bool {
 	return true
@@ -50,6 +60,10 @@ func (h *HolderApplicant) IsAdult() bool {
 
 func (h *HolderApplicant) HoldDoubleLicenses() bool {
 	return false
+}
+
+func (h *HolderApplicant) GetInitials() string {
+	return h.initials
 }
 
 func (s *DrivingLicenseSuite) TestUnderAgeApplicant() {
@@ -84,6 +98,17 @@ func (s *DrivingLicenseSuite) TestNormalLicenseApplicant() {
 	// license is not empty
 	s.NotZero(len(license))
 	s.Equal(1, logger.callCount)
+	s.Contains(logger.lastMessage, "normal applicant")
+}
+
+func (s *DrivingLicenseSuite) TestLicenseGeneration() {
+	normalLicensesApplicant := &HolderApplicant{initials: "MDB"}
+	logger := &SpyLogger{}
+	lg := drivinglicense.NewNumberGenerator(logger)
+	license, err := lg.Generate(normalLicensesApplicant)
+	s.NoError(err)
+	s.NotZero(len(license))
+	s.Contains(license, normalLicensesApplicant.GetInitials())
 	s.Contains(logger.lastMessage, "normal applicant")
 }
 
