@@ -3,6 +3,7 @@ package drivinglicense_test
 import (
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/suite"
 
 	"github.com/yenonn/learn-gotest/drivinglicense"
@@ -66,52 +67,7 @@ func (h *HolderApplicant) GetInitials() string {
 	return h.initials
 }
 
-func (s *DrivingLicenseSuite) TestUnderAgeApplicant() {
-	underAgeApplicant := &UnderAgeApplicant{}
-	logger := &SpyLogger{}
-	lg := drivinglicense.NewNumberGenerator(logger)
-	_, err := lg.Generate(underAgeApplicant)
-	s.Error(err)
-	s.Contains(err.Error(), "underaged applicant")
-	s.Equal(1, logger.callCount)
-	s.Contains(logger.lastMessage, "underaged applicant")
-}
-
-func (s *DrivingLicenseSuite) TestDoubleLicensesApplicant() {
-	holdingDoubleLicensesApplicant := &SecondLicenseHolderApplicant{}
-	logger := &SpyLogger{}
-	lg := drivinglicense.NewNumberGenerator(logger)
-	_, err := lg.Generate(holdingDoubleLicensesApplicant)
-	s.Error(err)
-	s.Contains(err.Error(), "holding double licenses")
-	s.Equal(1, logger.callCount)
-	s.Contains(logger.lastMessage, "holding double licenses")
-}
-
-func (s *DrivingLicenseSuite) TestNormalLicenseApplicant() {
-	normalLicensesApplicant := &HolderApplicant{}
-	logger := &SpyLogger{}
-	lg := drivinglicense.NewNumberGenerator(logger)
-	license, err := lg.Generate(normalLicensesApplicant)
-	// yield no error
-	s.NoError(err)
-	// license is not empty
-	s.NotZero(len(license))
-	s.Equal(1, logger.callCount)
-	s.Contains(logger.lastMessage, "normal applicant")
-}
-
-func (s *DrivingLicenseSuite) TestLicenseGeneration() {
-	normalLicensesApplicant := &HolderApplicant{initials: "MDB"}
-	logger := &SpyLogger{}
-	lg := drivinglicense.NewNumberGenerator(logger)
-	license, err := lg.Generate(normalLicensesApplicant)
-	s.NoError(err)
-	s.NotZero(len(license))
-	s.Contains(license, normalLicensesApplicant.GetInitials())
-	s.Contains(logger.lastMessage, "normal applicant")
-}
-
+// Fake logger to spy the logger contents
 type SpyLogger struct {
 	callCount   int
 	lastMessage string
@@ -120,4 +76,73 @@ type SpyLogger struct {
 func (spy *SpyLogger) LogStuffs(v string) {
 	spy.callCount++
 	spy.lastMessage = v
+}
+
+// Fake RandomNumbersGenerator
+type FakeRandomGenerator struct{}
+
+func (fake *FakeRandomGenerator) GetRandomNumbers() string {
+	return uuid.New().String()
+}
+
+// TestDrivingLicenseSuite
+func (s *DrivingLicenseSuite) TestUnderAgeApplicant() {
+	underAgeApplicant := &UnderAgeApplicant{}
+	logger := &SpyLogger{}
+	generator := &FakeRandomGenerator{}
+
+	lg := drivinglicense.NewNumberGenerator(logger, generator)
+	_, err := lg.Generate(underAgeApplicant)
+	s.Error(err)
+	s.Contains(err.Error(), "underaged applicant")
+	// Spying technique on logger
+	s.Equal(1, logger.callCount)
+	s.Contains(logger.lastMessage, "underaged applicant")
+}
+
+// TestDrivingLicenseSuite
+func (s *DrivingLicenseSuite) TestDoubleLicensesApplicant() {
+	holdingDoubleLicensesApplicant := &SecondLicenseHolderApplicant{}
+	logger := &SpyLogger{}
+	generator := &FakeRandomGenerator{}
+
+	lg := drivinglicense.NewNumberGenerator(logger, generator)
+	_, err := lg.Generate(holdingDoubleLicensesApplicant)
+	s.Error(err)
+	s.Contains(err.Error(), "holding double licenses")
+	// Spying on logger
+	s.Equal(1, logger.callCount)
+	s.Contains(logger.lastMessage, "holding double licenses")
+}
+
+// TestDrivingLicenseSuite
+func (s *DrivingLicenseSuite) TestNormalLicenseApplicant() {
+	normalLicensesApplicant := &HolderApplicant{}
+	logger := &SpyLogger{}
+	generator := &FakeRandomGenerator{}
+
+	lg := drivinglicense.NewNumberGenerator(logger, generator)
+	license, err := lg.Generate(normalLicensesApplicant)
+	// yield no error
+	s.NoError(err)
+	// license is not empty
+	s.NotZero(len(license))
+	// Spying the logger
+	s.Equal(1, logger.callCount)
+	s.Contains(logger.lastMessage, "normal applicant")
+}
+
+// TestDrivingLicenseSuite
+func (s *DrivingLicenseSuite) TestLicenseGeneration() {
+	normalLicensesApplicant := &HolderApplicant{initials: "MDB"}
+	logger := &SpyLogger{}
+	generator := &FakeRandomGenerator{}
+
+	lg := drivinglicense.NewNumberGenerator(logger, generator)
+	license, err := lg.Generate(normalLicensesApplicant)
+	s.NoError(err)
+	s.NotZero(len(license))
+	s.Contains(license, normalLicensesApplicant.GetInitials())
+	// Spying on logger
+	s.Contains(logger.lastMessage, "normal applicant")
 }

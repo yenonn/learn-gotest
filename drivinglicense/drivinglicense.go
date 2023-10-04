@@ -3,8 +3,6 @@ package drivinglicense
 import (
 	"errors"
 	"fmt"
-
-	"github.com/google/uuid"
 )
 
 type Applicant interface {
@@ -17,13 +15,19 @@ type Logger interface {
 	LogStuffs(v string)
 }
 
-type NumberGenerator struct {
-	logger Logger
+type RandomNumbersGenerator interface {
+	GetRandomNumbers() string
 }
 
-func NewNumberGenerator(logger Logger) NumberGenerator {
+type NumberGenerator struct {
+	logger          Logger
+	numberGenerator RandomNumbersGenerator
+}
+
+func NewNumberGenerator(logger Logger, generator RandomNumbersGenerator) NumberGenerator {
 	return NumberGenerator{
-		logger: logger,
+		logger:          logger,
+		numberGenerator: generator,
 	}
 }
 
@@ -31,7 +35,7 @@ func (n NumberGenerator) Generate(applicant Applicant) (string, error) {
 	if applicant.IsAdult() && !applicant.HoldDoubleLicenses() {
 		// normal case. IsAdult and Not holding double licenses
 		n.logger.LogStuffs("normal applicant")
-		license := fmt.Sprintf("%s:%s", applicant.GetInitials(), uuid.New().String())
+		license := fmt.Sprintf("%s:%s", applicant.GetInitials(), n.numberGenerator.GetRandomNumbers())
 		return license, nil
 	}
 
