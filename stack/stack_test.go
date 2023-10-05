@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/suite"
 
-	"github.com/yenonn/learn-gotest/adt"
+	adt "github.com/yenonn/learn-gotest/stack"
 )
 
 type StackSuite struct {
