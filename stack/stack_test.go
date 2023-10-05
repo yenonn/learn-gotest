@@ -1,17 +1,16 @@
-package adt_test
+package stack_test
 
 import (
 	"log"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
-
-	adt "github.com/yenonn/learn-gotest/stack"
+	"github.com/yenonn/learn-gotest/stack"
 )
 
 type StackSuite struct {
 	suite.Suite
-	stack *adt.Stack
+	stack *stack.Stack
 }
 
 func TestStackSuite(t *testing.T) {
@@ -22,7 +21,7 @@ func TestStackSuite(t *testing.T) {
 // Setup the Suite
 // Put all of the setup lines here.
 func (s *StackSuite) SetupTest() {
-	s.stack = adt.NewStack()
+	s.stack = stack.NewStack()
 }
 
 func (s *StackSuite) TestEmpty() {
@@ -48,8 +47,8 @@ func (s *StackSuite) TestStackNotEmptySize() {
 func (s *StackSuite) TestStackPop() {
 	s.stack.Push("red")
 	s.Equal("red", s.stack.Pop())
-	s.Zero(s.stack.Size())
 	s.True(s.stack.IsEmpty())
+	s.Zero(s.stack.Size())
 }
 
 func (s *StackSuite) TestStackPopMultipleItems() {

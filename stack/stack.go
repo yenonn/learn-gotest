@@ -1,4 +1,4 @@
-package adt
+package stack
 
 type Stack struct {
 	data []string
