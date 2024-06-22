@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func isPrime(n int) (bool, string) {
 	// by definition, 0 and 1 are not prime
@@ -20,8 +22,34 @@ func isPrime(n int) (bool, string) {
 	return true, fmt.Sprintf("%d is prime!", n)
 }
 
+func intro() {
+	fmt.Println("Prime number checker")
+	prompt()
+}
+
+func prompt() {
+	fmt.Print("Enter a number to check if it is prime: ")
+}
+
+func readUserInput(doneChan chan bool) {
+	var n int
+	for {
+		fmt.Scanf("%d", &n)
+		result, msg := isPrime(n)
+		if result {
+			fmt.Println(msg)
+			doneChan <- result
+			return
+		} else {
+			prompt()
+		}
+	}
+}
+
 func main() {
-	n := 2
-	_, msg := isPrime(n)
-	fmt.Println(msg)
+	doneChan := make(chan bool)
+	defer close(doneChan)
+	intro()
+	go readUserInput(doneChan)
+	<-doneChan
 }
