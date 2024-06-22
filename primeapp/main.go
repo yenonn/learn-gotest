@@ -41,6 +41,7 @@ func readUserInput(doneChan chan bool) {
 			doneChan <- result
 			return
 		} else {
+			fmt.Println(msg)
 			prompt()
 		}
 	}
