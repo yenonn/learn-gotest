@@ -69,8 +69,8 @@ func (h *HolderApplicant) GetInitials() string {
 
 // Fake logger to spy the logger contents
 type SpyLogger struct {
-	callCount   int
 	lastMessage string
+	callCount   int
 }
 
 func (spy *SpyLogger) LogStuffs(v string) {
