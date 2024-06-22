@@ -1,6 +1,10 @@
 package main
 
-import "testing"
+import (
+	"io"
+	"os"
+	"testing"
+)
 
 func TestIsPrime(t *testing.T) {
 	result, msg := isPrime(0)
@@ -37,5 +41,18 @@ func TestTableTestIsPrime(t *testing.T) {
 				t.Errorf("with %d as a test parameter, got '%s', but expected '%s'", tt.testNum, msg, tt.expectedMsg)
 			}
 		})
+	}
+}
+
+func TestPrompt(t *testing.T) {
+	oldStdOut := os.Stdout
+	r, w, _ := os.Pipe()
+	os.Stdout = w
+	prompt()
+	w.Close()
+	out, _ := io.ReadAll(r)
+	os.Stdout = oldStdOut
+	if string(out) != "Enter a number to check if it is prime: " {
+		t.Errorf("with %d as a test parameter, got '%s', but expected 'Enter a number to check if it is prime: '", 0, string(out))
 	}
 }
