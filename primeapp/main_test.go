@@ -45,8 +45,8 @@ func TestTableTestIsPrime(t *testing.T) {
 }
 
 func TestPrompt(t *testing.T) {
-	oldStdOut := os.Stdout
 	r, w, _ := os.Pipe()
+	oldStdOut := os.Stdout
 	os.Stdout = w
 	prompt()
 	w.Close()
