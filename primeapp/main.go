@@ -14,7 +14,7 @@ func isPrime(n int) (bool, string) {
 		return false, fmt.Sprintf("Negative numbers are not prime, %d is not a positive number", n)
 	}
 
-	for i := 2; i < n/2; i++ {
+	for i := 2; i <= n/2; i++ {
 		if n%i == 0 {
 			return false, fmt.Sprintf("%d is not prime because it is divisible by %d", n, i)
 		}

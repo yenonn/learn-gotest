@@ -27,6 +27,7 @@ func TestTableTestIsPrime(t *testing.T) {
 	primeTests := []testTableIsPrime{
 		{"prime", "7 is prime!", 7, true},
 		{"not prime", "9 is not prime because it is divisible by 3", 9, false},
+		{"not prime", "4 is not prime because it is divisible by 2", 4, false},
 		{"negative number", "Negative numbers are not prime, -3 is not a positive number", -3, false},
 		{"zero", "0 is not prime by definition", 0, false},
 	}
